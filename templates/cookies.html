@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+        function setSelectedDate() {
+            try {
+                let lblSessionSelDate = window.document.getElementById("cphMainPage_lblSessionSelDate");
+                let selectedDate = lblSessionSelDate.getAttribute("data-selected-date");
+
+                if (selectedDate) {
+
+                    let selectedDateCell = document.querySelector('[data-date="' + selectedDate + '"]');
+
+                    selectedDateCell.classList.add("calSelected");
+                }
+            }
+            catch (e) { }
+        }
+
+        // Call the above method on load and on update.
+        window.onload = setSelectedDate;
+        function pageLoad() { setSelectedDate(); }
+
+
+    </script>
+</head>
+<body>
+
+<div class="divSessionCalendar">
+                                <div class="divSessionTitle">
+                                    <span id="cphMainPage_lblBookingDate">1. Choose your date</span>
+                                </div>
+                                <div id="divSessionSelDate" class="divSessionSelDate">
+                                    <span id="cphMainPage_lblSessionSelDate" class="lblSessionSelDate" data-selected-date="2024-03-21">Selected date: 21 March</span>
+                                </div>
+                                <div class="divSessionCal">
+                                    <table id="cphMainPage_calSession" class="calSession" cellspacing="0" cellpadding="2" title="Calendar" style="border-width:1px;border-style:solid;border-collapse:collapse;">
+		<tr><td colspan="7" style="background-color:Silver;"><table class="calTitle" cellspacing="0" style="width:100%;border-collapse:collapse;">
+			<tr><td class="calNextPrev" style="width:15%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','V8797')" style="color:Black" title="Go to the previous month"><</a></td><td align="center" style="width:70%;">March 2024</td><td class="calNextPrev" align="right" style="width:15%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','V8857')" style="color:Black" title="Go to the next month">></a></td></tr>
+		</table></td></tr><tr><th class="calHeader" align="center" abbr="Monday" scope="col">Mon</th><th class="calHeader" align="center" abbr="Tuesday" scope="col">Tue</th><th class="calHeader" align="center" abbr="Wednesday" scope="col">Wed</th><th class="calHeader" align="center" abbr="Thursday" scope="col">Thu</th><th class="calHeader" align="center" abbr="Friday" scope="col">Fri</th><th class="calHeader" align="center" abbr="Saturday" scope="col">Sat</th><th class="calHeader" align="center" abbr="Sunday" scope="col">Sun</th></tr><tr><td class="calOtherMonth" align="center" data-date="2024-02-26" style="color:#ffffff;background-color:#fa8072;width:14%;">26</td><td class="calOtherMonth" align="center" data-date="2024-02-27" style="color:#ffffff;background-color:#fa8072;width:14%;">27</td><td class="calOtherMonth" align="center" data-date="2024-02-28" style="color:#ffffff;background-color:#fa8072;width:14%;">28</td><td class="calOtherMonth" align="center" data-date="2024-02-29" style="color:#ffffff;background-color:#fa8072;width:14%;">29</td><td class="calDays" align="center" data-date="2024-03-01" style="color:#ffffff;background-color:#fa8072;width:14%;">1</td><td class="calDays" align="center" data-date="2024-03-02" style="color:#ffffff;background-color:#fa8072;width:14%;">2</td><td class="calDays" align="center" data-date="2024-03-03" style="color:#ffffff;background-color:#fa8072;width:14%;">3</td></tr><tr><td class="calDays" align="center" data-date="2024-03-04" style="color:#ffffff;background-color:#fa8072;width:14%;">4</td><td class="calDays" align="center" data-date="2024-03-05" style="color:#ffffff;background-color:#fa8072;width:14%;">5</td><td class="calDays" align="center" data-date="2024-03-06" style="color:#ffffff;background-color:#fa8072;width:14%;">6</td><td class="calDays" align="center" data-date="2024-03-07" style="color:#ffffff;background-color:#fa8072;width:14%;">7</td><td class="calDays" align="center" data-date="2024-03-08" style="color:#ffffff;background-color:#fa8072;width:14%;">8</td><td class="calDays" align="center" data-date="2024-03-09" style="color:#ffffff;background-color:#fa8072;width:14%;">9</td><td class="calDays" align="center" data-date="2024-03-10" style="color:#ffffff;background-color:#fa8072;width:14%;">10</td></tr><tr><td class="calDays" align="center" data-date="2024-03-11" style="color:#ffffff;background-color:#fa8072;width:14%;">11</td><td class="calDays" align="center" data-date="2024-03-12" style="color:#ffffff;background-color:#fa8072;width:14%;">12</td><td class="calDays" align="center" data-date="2024-03-13" style="color:#ffffff;background-color:#fa8072;width:14%;">13</td><td class="calDays" align="center" data-date="2024-03-14" style="color:#ffffff;background-color:#fa8072;width:14%;">14</td><td class="calDays" align="center" data-date="2024-03-15" style="color:#ffffff;background-color:#fa8072;width:14%;">15</td><td class="calDays" align="center" data-date="2024-03-16" style="color:#ffffff;background-color:#fa8072;width:14%;">16</td><td class="calDays" align="center" data-date="2024-03-17" style="color:#ffffff;background-color:#fa8072;width:14%;">17</td></tr><tr><td class="calToday" align="center" data-date="2024-03-18" style="color:#ffffff;background-color:#fa8072;width:14%;">18</td><td class="calDays" align="center" data-date="2024-03-19" style="background-color:LimeGreen;width:14%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','8844')" style="color:Black" title="19 March">19</a></td><td class="calDays" align="center" data-date="2024-03-20" style="background-color:LimeGreen;width:14%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','8845')" style="color:Black" title="20 March">20</a></td><td class="calSelected" align="center" data-date="2024-03-21" style="color:White;background-color:LimeGreen;width:14%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','8846')" style="color:White" title="21 March">21</a></td><td class="calDays" align="center" data-date="2024-03-22" style="background-color:LimeGreen;width:14%;"><a href="javascript:__doPostBack('ctl00$cphMainPage$calSession','8847')" style="color:Black" title="22 March">22</a></td><td class="calDays" align="center" data-date="2024-03-23" style="color:#ffffff;background-color:#fa8072;width:14%;">23</td><td class="calDays" align="center" data-date="2024-03-24" style="color:#ffffff;background-color:#fa8072;width:14%;">24</td></tr><tr><td class="calDays" align="center" data-date="2024-03-25" style="color:#ffffff;background-color:#fa8072;width:14%;">25</td><td class="calDays" align="center" data-date="2024-03-26" style="color:#ffffff;background-color:#fa8072;width:14%;">26</td><td class="calDays" align="center" data-date="2024-03-27" style="color:#ffffff;background-color:#fa8072;width:14%;">27</td><td class="calDays" align="center" data-date="2024-03-28" style="color:#ffffff;background-color:#fa8072;width:14%;">28</td><td class="calDays" align="center" data-date="2024-03-29" style="color:#ffffff;background-color:#fa8072;width:14%;">29</td><td class="calDays" align="center" data-date="2024-03-30" style="color:#ffffff;background-color:#fa8072;width:14%;">30</td><td class="calDays" align="center" data-date="2024-03-31" style="color:#ffffff;background-color:#fa8072;width:14%;">31</td></tr><tr><td class="calOtherMonth" align="center" data-date="2024-04-01" style="color:#ffffff;background-color:#fa8072;width:14%;">1</td><td class="calOtherMonth" align="center" data-date="2024-04-02" style="color:#ffffff;background-color:#fa8072;width:14%;">2</td><td class="calOtherMonth" align="center" data-date="2024-04-03" style="color:#ffffff;background-color:#fa8072;width:14%;">3</td><td class="calOtherMonth" align="center" data-date="2024-04-04" style="color:#ffffff;background-color:#fa8072;width:14%;">4</td><td class="calOtherMonth" align="center" data-date="2024-04-05" style="color:#ffffff;background-color:#fa8072;width:14%;">5</td><td class="calOtherMonth" align="center" data-date="2024-04-06" style="color:#ffffff;background-color:#fa8072;width:14%;">6</td><td class="calOtherMonth" align="center" data-date="2024-04-07" style="color:#ffffff;background-color:#fa8072;width:14%;">7</td></tr>
+	</table>
+                                </div>
+                                <div class="divMeracCalInfo">
+                                    <span id="cphMainPage_lblBookingDate2" class="lblSessBookInfo">(Available dates are in green)</span>
+                                </div>
+
+                            </div>
+
+
+
+</body>
+</html>
