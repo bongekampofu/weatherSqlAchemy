@@ -11,6 +11,8 @@ Book - {{event.eventName}}
             <p>{{event.description}}</p><br>
             <p>Event Starts: {{ event.startDate }} at {{ event.startTime }}</p>
             <p>Event Ends: {{ event.endDate }} at {{ event.endTime }}</p>
+
+            <p>Tickets Left: {{ event.ticketsLeft }}</p>
             <br>
             <p>Name on the ticket: <span><strong>{{user.firstname}} {{user.lastname}}</strong></span></p>
             <p>Email address: <span><strong>{{user.email}}</strong></span></p>
