@@ -28,6 +28,7 @@ import json
 from sqlalchemy.ext.hybrid import hybrid_property
 from typing import Union, Type
 
+
 admin = Admin()
 app = Flask(__name__, static_folder='static')
 
@@ -130,8 +131,8 @@ class Events(db.Model):
     adultPrice = db.Column(db.Numeric(10, 2), )
     childPrice = db.Column(db.Numeric(10, 2), )
     type = db.Column(db.String(80), nullable=False)
-    startDate = db.Column(db.DateTime)
-    endDate = db.Column(db.DateTime)
+    date = db.Column(db.Date, nullable=False)
+    endDate = db.Column(db.Date, nullable=False)
     description = db.Column(db.String(80), nullable=False)
     venueID = db.Column(db.Integer)
     adminID = db.Column(db.Integer)
@@ -174,8 +175,8 @@ class UserView(ModelView):
     column_list = ["username", "firstname", "lastname",  "password", "email", "agreed_terms", "reg_datetime", "role"]
 
 class EventsView(ModelView):
-    form_columns = ["eventName", "ticketsLeft", "adultPrice",  "childPrice", "type", "description", "startDate", "venueID", "adminID", "startTime", "endTime"]
-    column_list = ["eventName", "ticketsLeft", "adultPrice",  "childPrice", "type", "description", "startDate", "venueID", "adminID", "startTime", "endTime"]
+    form_columns = ["eventName", "ticketsLeft", "adultPrice",  "childPrice", "type", "description", "date", "venueID", "adminID", "startTime", "endTime"]
+    column_list = ["eventName", "ticketsLeft", "adultPrice",  "childPrice", "type", "description", "date", "venueID", "adminID", "startTime", "endTime"]
 
 
 admin.add_view(RoleView(Role, db.session))
@@ -206,19 +207,19 @@ def home():
     startTime = startTime = datetime.datetime.strptime(a, "%H:%M").time()
     endTime = endTime = datetime.datetime.strptime(b, "%H:%M").time()
 
-
-    new_event = Events(eventName="Glastonbury", ticketsLeft=tickets1, adultPrice=adultPrice, childPrice=childPrice, type="music festival", startDate=startDate,
+    '''
+    new_event = Events(eventName="Glastonbury", ticketsLeft=tickets1, adultPrice=adultPrice, childPrice=childPrice, type="music festival", date=startDate,
                        endDate=endDate,  description="family fun", venueID=1, adminID=1, startTime=startTime, endTime=endTime)
 
     db.session.add(new_event)
     db.session.commit()
 
-    new_event = Events(eventName="Uptown", ticketsLeft=tickets2, adultPrice=adultPrice, childPrice=childPrice, type="family fun festival", startDate=startDate2,
+    new_event = Events(eventName="Uptown", ticketsLeft=tickets2, adultPrice=adultPrice, childPrice=childPrice, type="family fun festival", date=startDate2,
                        endDate=endDate2,  description="family fun", venueID=1, adminID=1, startTime=startTime, endTime=endTime)
 
     db.session.add(new_event)
     db.session.commit()
-
+    '''
     events = db.session.query(Events).all()
 
     return render_template('home.html', events=events)
@@ -285,13 +286,70 @@ def register():
 @app.route('/welcome')
 def welcome():
     if "username" in login_session:
-        username = login_session['username']
+        usernme = login_session['username']
 
         events = db.session.query(Events).all()
 
         return render_template('welcome.html', events = events)
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/bookdate', methods=['GET', 'POST'])
+def bookdate():
+    events = Events.query.all()
+
+    if request.method == 'POST':
+        print("My session in booking  is here ")
+        username = login_session['username']
+        user = User.query.filter_by(username=username).first()
+        id = user.id
+        print("My session is is  ", id)
+
+        dateBooked = request.form.get("selected_date")
+        print("date booked is", dateBooked)
+        print(dateBooked)
+        events = Events.query.filter_by(date=dateBooked).first()
+        tLef = events.ticketsLeft
+        print("data type of tLfeft")
+        print(type(tLef))
+        print("original t.icket numbers are ", tLef)
+        tic = int(request.form.get("tickets"))
+        print("tickets bought number is ", tic)
+        eventID = events.eventID
+
+        dateBooked = datetime.datetime.strptime(dateBooked, '%Y-%m-%d')
+
+        events.ticketsLeft = tLef - tic
+        db.session.commit()
+        print("testing")
+        print(id)
+        print(eventID)
+        print(tic)
+        print(dateBooked)
+        print(type(dateBooked))
+        new_trans = Transactions(userID=id, eventID=eventID, tickets=tic, dateBooked=dateBooked)
+        #new_trans = Transactions(userID=id, eventID=eventID, tickets=tic)
+        db.session.add(new_trans)
+        db.session.commit()
+
+        msg = "Success!"
+        return render_template("confirmation.html", msg=msg)
+    else:
+        username = login_session['username']
+        user = User.query.filter_by(username=username).first()
+
+    return render_template("bookingdate.html", user=user, events=events)
+
+@app.route('/available_tickets')
+def available_tickets():
+    selected_date_str = request.args.get('date')
+    selected_date = datetime.datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+    available_tickets = Events.query.filter_by(date=selected_date).all()
+    return jsonify([{'date': events.date.strftime('%Y-%m-%d'), 'quantity': events.ticketsLeft} for events in available_tickets])
+
+
+
 
 @app.route("/book/<eventID>", methods=["POST", "GET"])
 @login_required
@@ -311,7 +369,8 @@ def book(eventID):
         print("original t.icket numbers are ", tLef)
         tic = int(request.form.get("tickets"))
         print("tickets bought number is ", tic)
-        dateBooked = request.form.get("bookdate")
+        dateBooked = request.form.get("selected_date")
+
         dateBooked = datetime.datetime.strptime(dateBooked, '%Y-%m-%d')
         print(dateBooked)
         print(type(dateBooked))
