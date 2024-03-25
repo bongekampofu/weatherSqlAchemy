@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Available Tickets</title>
+</head>
+<body>
+  <h1>Select a Date</h1>
+
+  <form action="{{url_for('bookdate')}}" method="POST">
+      <input type="date" name="selected_date" id="selected_date">
+
+  <h2>Available Tickets</h2>
+  <ul id="available_tickets"></ul>
+
+       <div class="form-box">
+            Number of tickets:
+            <select name="tickets">
+                {% for i in range(100) %}
+                <option value="{{i+1}}">{{i + 1}}</option>
+                {% endfor %}
+            </select>
+        </div><br>
+
+       <table border="1">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Adult Price</th>
+                <th>Quantity</th>
+                <th>Child Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for events in events %}
+            <tr>
+                <td>{{ events.eventName }}</td>
+                <td>{{ events.adultPrice}}</td>
+                <td>  <select name="tickets">
+                {% for i in range(100) %}
+                <option value="{{i+1}}">{{i + 1}}</option>
+                {% endfor %}
+            </select>                    </td>
+                <td>{{ events.childPrice}}</td>
+                <td> <select name="tickets2">
+                {% for i in range(100) %}
+                <option value="{{i+1}}">{{i + 1}}</option>
+                {% endfor %}
+            </select></td>
+                <td> Total Price: {{(events.adultPrice ) }}  </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <br><br>
+
+        <div class="form-box">
+            <button type = "submit" >Book</button>
+        </div>
+      <br>
+            <p>Name on the ticket: <span><strong>{{user.firstname}} {{user.lastname}}</strong></span></p>
+            <p>Email address: <span><strong>{{user.email}}</strong></span></p>
+
+    </form>
+
+  <script>
+     //1st code - disable previous dates
+    // Get today's date
+    var today = new Date().toISOString().split('T')[0];
+
+    // Set the minimum selectable date to today
+    document.getElementById("selected_date").setAttribute("min", today);
+
+  //2nd code - show tickets available tickets per day
+    document.getElementById('selected_date').addEventListener('change', function() {
+      var selectedDate = this.value;
+      fetch('/available_tickets?date=' + selectedDate)
+        .then(response => response.json())
+        .then(data => {
+          var ticketsList = document.getElementById('available_tickets');
+          ticketsList.innerHTML = '';
+          data.forEach(function(ticket) {
+            var listItem = document.createElement('li');
+            listItem.textContent = 'Date: ' + ticket.date + ' - Quantity: ' + ticket.quantity;
+            ticketsList.appendChild(listItem);
+          });
+        })
+        .catch(error => console.error('Error fetching available tickets:', error));
+    });
+
+  </script>
+</body>
+</html>

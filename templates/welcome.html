@@ -10,18 +10,20 @@
 
 <body>
 
+      </div>
+            <button><a href="{{url_for('bookdate')}}">Book Tickets</a></button> <br> <br>
+        </div>
+
 {% for events in events %}
        Event Type: {{ events.type }} <br>
       {{ events.eventName }}        <br>
        Event Starts: {{ events.startDate }} at {{ events.startTime }} <br>
-       Venue: {{ events.venueName }}  <br>
+       <br>
        Adult Fee:£{{ events.adultPrice }}
        Adult Fee:£{{ events.adultPrice }}
 
        Tickets Left: {{ events.ticketsLeft }} <br>
-      </div>
-            <a href="{{ '/book/%s'%events.eventID|urlencode }}" class="btn btn-success">Book</a> <br> <br>
-        </div>
+
   {% endfor %}
 
     <button><a href="{{url_for('forecast')}}"> Get Weather Forecast</a></button> <br> <br>
